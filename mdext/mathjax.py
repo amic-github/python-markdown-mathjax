@@ -16,7 +16,7 @@ class MathJaxPattern(markdown.inlinepatterns.Pattern):
         node.text = markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5))
         return node
 
-class MathJaxPostprocessor(Postprocessor):
+class MathJaxPostprocessor(markdown.postprocessors.Postprocessor):
     def run(self, text):
         text = text.replace('<mathjax>', '')
         text = text.replace('</mathjax>', '')
@@ -27,6 +27,7 @@ class MathJaxExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
         # Needs to come before escape matching because \ is pretty important in LaTeX
         md.inlinePatterns.add('mathjax', MathJaxPattern(), '<escape')
+        md.postprocessors['mathjax'] = MathJaxPostprocessor(md)
 
         
 
